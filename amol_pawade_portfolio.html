@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amol Pawade — Digital Marketing & Web Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0b1120;
+    --card: #0f1825;
+    --border: rgba(0,210,255,0.12);
+    --cyan: #00d2ff;
+    --blue: #0066ff;
+    --purple: #7b2fff;
+    --green: #00ff88;
+    --orange: #ff6b35;
+    --text: #e8edf5;
+    --muted: #6b7a99;
+    --glow: 0 0 40px rgba(0,210,255,0.15);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--cyan) var(--bg)}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.6}
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:0}
+
+  /* ─── GRID BG ─── */
+  body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,210,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,210,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+
+  /* ─── NAV ─── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(5,8,16,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:0.05em;color:var(--cyan);text-decoration:none}
+  .nav-logo span{color:var(--text)}
+  .nav-links{display:flex;gap:2.5rem;list-style:none}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;transition:color .3s;font-family:'Space Mono',monospace}
+  .nav-links a:hover{color:var(--cyan)}
+  .nav-cta{background:transparent;border:1px solid var(--cyan);color:var(--cyan);padding:.5rem 1.3rem;font-family:'Space Mono',monospace;font-size:0.8rem;cursor:pointer;transition:all .3s;text-decoration:none;letter-spacing:0.08em}
+  .nav-cta:hover{background:var(--cyan);color:var(--bg)}
+
+  /* ─── HERO ─── */
+  #hero{min-height:100vh;display:flex;align-items:center;padding:8rem 3rem 4rem;position:relative;z-index:1;overflow:hidden}
+  .hero-inner{max-width:1200px;margin:0 auto;width:100%}
+  .hero-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(0,210,255,0.08);border:1px solid var(--border);padding:.4rem 1rem;border-radius:2rem;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--cyan);margin-bottom:2rem;animation:fadeDown .8s ease both}
+  .hero-badge::before{content:'';width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,0.4)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(0,255,136,0)}}
+  .hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,7vw,6rem);line-height:1;margin-bottom:.5rem;animation:fadeDown .9s ease .1s both}
+  .hero-name .accent{color:transparent;-webkit-text-stroke:1px var(--cyan)}
+  .hero-title{font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);font-weight:300;margin-bottom:2rem;animation:fadeDown 1s ease .2s both}
+  .hero-title strong{color:var(--cyan);font-weight:500}
+  .hero-desc{font-size:1.05rem;max-width:600px;color:var(--text);opacity:.85;line-height:1.8;margin-bottom:3rem;animation:fadeDown 1s ease .3s both}
+  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeDown 1s ease .4s both}
+  .btn-primary{display:inline-flex;align-items:center;gap:.6rem;background:var(--cyan);color:var(--bg);padding:.85rem 2rem;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;text-decoration:none;transition:all .3s;letter-spacing:.05em}
+  .btn-primary:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,210,255,0.3)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:.6rem;background:transparent;border:1px solid var(--border);color:var(--text);padding:.85rem 2rem;font-family:'Syne',sans-serif;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .3s}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+  .hero-stats{display:flex;gap:3rem;margin-top:4rem;padding-top:3rem;border-top:1px solid var(--border);animation:fadeDown 1s ease .5s both}
+  .stat{display:flex;flex-direction:column;gap:.3rem}
+  .stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;color:var(--cyan)}
+  .stat-label{font-size:.8rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+  /* HERO DECORATION */
+  .hero-deco{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:600px;height:600px;pointer-events:none;animation:fadeIn 1.5s ease .5s both}
+  .hero-deco svg{width:100%;height:100%;opacity:.3}
+  .hero-orb{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,102,255,0.3) 0%,transparent 70%);right:-100px;top:50%;transform:translateY(-50%);filter:blur(60px);pointer-events:none}
+
+  /* ─── SECTIONS ─── */
+  section{padding:6rem 3rem;position:relative;z-index:1}
+  .container{max-width:1200px;margin:0 auto}
+  .section-label{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.8rem;display:flex;align-items:center;gap:.8rem}
+  .section-label::before{content:'';height:1px;width:40px;background:var(--cyan)}
+  .section-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;line-height:1.1}
+  .section-sub{color:var(--muted);max-width:560px;margin-bottom:3.5rem;font-size:1rem}
+
+  /* ─── ABOUT ─── */
+  #about{background:var(--surface)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+  .about-visual{position:relative}
+  .about-card-main{background:var(--card);border:1px solid var(--border);padding:2.5rem;border-radius:2px;position:relative;overflow:hidden}
+  .about-card-main::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--purple))}
+  .about-tag-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+  .tag{display:inline-flex;align-items:center;gap:.3rem;background:rgba(0,210,255,0.08);border:1px solid var(--border);color:var(--cyan);padding:.3rem .75rem;font-family:'Space Mono',monospace;font-size:.7rem;border-radius:2px}
+  .about-card-main h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.6rem;margin-bottom:.8rem}
+  .about-card-main p{color:var(--muted);line-height:1.8;font-size:.95rem}
+  .about-floating{position:absolute;bottom:-20px;right:-20px;background:var(--card);border:1px solid var(--border);padding:1.2rem 1.8rem;border-radius:2px}
+  .about-floating .num{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--green)}
+  .about-floating .label{font-size:.75rem;color:var(--muted);font-family:'Space Mono',monospace}
+  .about-text h2{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;margin-bottom:1.5rem;line-height:1.2}
+  .about-text p{color:var(--muted);line-height:1.9;margin-bottom:1.2rem;font-size:.97rem}
+  .about-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-top:1.5rem}
+  .about-list li{display:flex;align-items:center;gap:.8rem;font-size:.9rem;color:var(--text)}
+  .about-list li::before{content:'▸';color:var(--cyan);font-size:.9rem;flex-shrink:0}
+
+  /* ─── SKILLS ─── */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .skill-card{background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:2px;transition:all .4s;position:relative;overflow:hidden}
+  .skill-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,210,255,0.05),transparent);opacity:0;transition:opacity .4s}
+  .skill-card:hover{border-color:var(--cyan);transform:translateY(-4px);box-shadow:var(--glow)}
+  .skill-card:hover::after{opacity:1}
+  .skill-icon{width:48px;height:48px;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:center;background:rgba(0,210,255,0.1);border:1px solid var(--border)}
+  .skill-icon svg{width:24px;height:24px;stroke:var(--cyan);fill:none;stroke-width:1.5}
+  .skill-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:.8rem}
+  .skill-items{display:flex;flex-wrap:wrap;gap:.4rem}
+  .skill-pill{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:.25rem .7rem;font-size:.75rem;color:var(--muted);border-radius:2px;font-family:'Space Mono',monospace;transition:all .3s}
+  .skill-card:hover .skill-pill{border-color:var(--border);color:var(--text)}
+
+  /* ─── EXPERIENCE ─── */
+  #experience{background:var(--surface)}
+  .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+  .exp-card{background:var(--card);border:1px solid var(--border);padding:2.5rem;border-radius:2px;position:relative;transition:all .4s}
+  .exp-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:linear-gradient(180deg,var(--cyan),var(--blue));transition:height .6s ease}
+  .exp-card:hover::before{height:100%}
+  .exp-card:hover{border-color:var(--border);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+  .exp-period{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--cyan);margin-bottom:.5rem}
+  .exp-company{font-family:'Syne',sans-serif;font-weight:700;font-size:1.4rem;margin-bottom:.2rem}
+  .exp-role{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+  .exp-points{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .exp-points li{color:var(--muted);font-size:.88rem;padding-left:1.2rem;position:relative;line-height:1.6}
+  .exp-points li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-size:.75rem;top:.1rem}
+
+  /* ─── CASE STUDIES ─── */
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+  .case-card{background:var(--card);border:1px solid var(--border);padding:2.5rem;border-radius:2px;position:relative;overflow:hidden;transition:all .4s}
+  .case-card:hover{transform:translateY(-6px);border-color:rgba(0,210,255,0.3);box-shadow:0 30px 80px rgba(0,0,0,0.4)}
+  .case-num{font-family:'Syne',sans-serif;font-weight:800;font-size:5rem;position:absolute;top:-1rem;right:1.5rem;color:rgba(0,210,255,0.05);line-height:1;pointer-events:none;user-select:none}
+  .case-label{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  .case-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;margin-bottom:.8rem}
+  .case-card p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1.5rem}
+  .case-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+  .metric{display:flex;flex-direction:column;gap:.2rem}
+  .metric-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;color:var(--cyan)}
+  .metric-key{font-size:.7rem;color:var(--muted);font-family:'Space Mono',monospace}
+  .case-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+
+  /* ─── ACHIEVEMENTS ─── */
+  #achievements{background:var(--surface)}
+  .ach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  .ach-card{background:var(--card);border:1px solid var(--border);padding:2rem;border-radius:2px;display:flex;flex-direction:column;gap:.8rem;transition:all .3s}
+  .ach-card:hover{border-color:var(--cyan);box-shadow:var(--glow)}
+  .ach-icon{font-size:1.8rem}
+  .ach-val{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--cyan)}
+  .ach-desc{color:var(--muted);font-size:.88rem;line-height:1.5}
+
+  /* ─── TOOLS ─── */
+  .tools-row{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+  .tool-badge{display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--border);padding:.7rem 1.3rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--text);transition:all .3s;cursor:default}
+  .tool-badge:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+
+  /* ─── CONTACT ─── */
+  #contact{background:var(--surface);text-align:center}
+  .contact-card{background:var(--card);border:1px solid var(--border);max-width:700px;margin:0 auto;padding:4rem;position:relative;overflow:hidden}
+  .contact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--purple))}
+  .contact-email{font-family:'Syne',sans-serif;font-weight:700;font-size:1.8rem;color:var(--cyan);margin:1.5rem 0;word-break:break-all}
+  .contact-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem}
+  .contact-item{display:flex;align-items:center;gap:.6rem;color:var(--muted);font-family:'Space Mono',monospace;font-size:.8rem}
+  .contact-item svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:1.5;flex-shrink:0}
+
+  /* ─── FOOTER ─── */
+  footer{padding:2rem 3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;z-index:1;position:relative}
+  .footer-left{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)}
+  .footer-left span{color:var(--cyan)}
+  .footer-right{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)}
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:none}
+  .reveal-delay-1{transition-delay:.1s}
+  .reveal-delay-2{transition-delay:.2s}
+  .reveal-delay-3{transition-delay:.3s}
+  .reveal-delay-4{transition-delay:.4s}
+
+  /* glitch on hover for hero name */
+  .hero-name:hover .accent{animation:glitch .5s linear}
+  @keyframes glitch{0%,100%{text-shadow:none}20%{text-shadow:2px 0 var(--blue),-2px 0 var(--cyan)}40%{text-shadow:-2px 0 var(--purple),2px 0 var(--orange)}60%{text-shadow:2px 0 var(--cyan),-2px 0 var(--blue)}80%{text-shadow:-2px 0 var(--orange),2px 0 var(--purple)}}
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:900px){
+    nav{padding:1rem 1.5rem}
+    .nav-links{display:none}
+    section{padding:4rem 1.5rem}
+    #hero{padding:7rem 1.5rem 3rem}
+    .about-grid,.exp-grid,.case-grid{grid-template-columns:1fr}
+    .skills-grid,.ach-grid{grid-template-columns:1fr 1fr}
+    .hero-stats{gap:1.5rem}
+    footer{flex-direction:column;gap:.5rem;text-align:center;padding:1.5rem}
+  }
+  @media(max-width:600px){
+    .skills-grid,.ach-grid{grid-template-columns:1fr}
+    .case-metrics{grid-template-columns:1fr 1fr}
+    .hero-deco,.hero-orb{display:none}
+    .contact-card{padding:2.5rem 1.5rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <a class="nav-logo" href="#hero">AMOL<span>PAWADE</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#cases">Cases</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:amolpawade@email.com" class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">✦ Available for Full-Time & Freelance</div>
+    <h1 class="hero-name">AMOL<br><span class="accent">PAWADE</span></h1>
+    <p class="hero-title">
+      <strong>Performance Marketer</strong> · Web Developer · Cybersecurity Enthusiast
+    </p>
+    <p class="hero-desc">
+      I generate <strong style="color:var(--cyan)">600+ qualified leads/month</strong> through data-driven Meta & Google Ads campaigns — and build the high-converting websites that close them. 3+ years. Zero guesswork.
+    </p>
+    <div class="hero-btns">
+      <a href="#cases" class="btn-primary">↓ View Case Studies</a>
+      <a href="#contact" class="btn-ghost">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">600+</span><span class="stat-label">Leads / Month</span></div>
+      <div class="stat"><span class="stat-num">30%+</span><span class="stat-label">CPL Reduced</span></div>
+      <div class="stat"><span class="stat-num">3+</span><span class="stat-label">Years Exp.</span></div>
+      <div class="stat"><span class="stat-num">50%</span><span class="stat-label">Less Manual Work</span></div>
+    </div>
+  </div>
+  <!-- decorative grid rings -->
+  <div class="hero-deco">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="300" cy="300" r="280" stroke="#00d2ff" stroke-width=".5" fill="none" stroke-dasharray="4 8"/>
+      <circle cx="300" cy="300" r="220" stroke="#0066ff" stroke-width=".5" fill="none" stroke-dasharray="2 12"/>
+      <circle cx="300" cy="300" r="160" stroke="#7b2fff" stroke-width=".5" fill="none"/>
+      <circle cx="300" cy="300" r="100" stroke="#00d2ff" stroke-width=".5" fill="none" stroke-dasharray="6 4"/>
+      <line x1="20" y1="300" x2="580" y2="300" stroke="#00d2ff" stroke-width=".3" opacity=".4"/>
+      <line x1="300" y1="20" x2="300" y2="580" stroke="#00d2ff" stroke-width=".3" opacity=".4"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════ ABOUT ══════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="about-card-main">
+          <div class="about-tag-row">
+            <span class="tag">📍 Maharashtra, India</span>
+            <span class="tag">🟢 Open to Work</span>
+            <span class="tag">🎓 BCS — Pursuing</span>
+          </div>
+          <h3>The Triple Threat</h3>
+          <p>Most marketers can't code. Most developers can't market. I do both — and I'm adding cybersecurity to the mix. That rare overlap is what makes campaigns not just run, but <em>convert</em>.</p>
+        </div>
+        <div class="about-floating">
+          <div class="num">∞</div>
+          <div class="label">ROI Mindset</div>
+        </div>
+      </div>
+      <div class="about-text reveal reveal-delay-2">
+        <div class="section-label">Who I Am</div>
+        <h2>Marketer. Builder.<br>Problem Solver.</h2>
+        <p>I'm a results-driven Digital Marketing Specialist and Web Developer based in Maharashtra with 3+ years of hands-on experience turning ad budgets into qualified pipelines and ideas into live, fast-loading websites.</p>
+        <p>Beyond campaigns and code, I'm actively developing cybersecurity skills — applying ethical hacking knowledge to build safer, more resilient digital products.</p>
+        <ul class="about-list">
+          <li>Consistently driving 600+ B2C/B2B leads per month</li>
+          <li>Full-stack capability: from concept to deployment</li>
+          <li>Automation-first mindset with n8n + Python</li>
+          <li>Ethical hacking practice on TryHackMe & HackTheBox</li>
+          <li>Targeting CEH / CompTIA Security+ certification</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SKILLS ══════════════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal">Capabilities</div>
+    <h2 class="section-title reveal">What I Bring</h2>
+    <p class="section-sub reveal">A rare blend of performance marketing, full-stack development, and cybersecurity knowledge.</p>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Performance Marketing</h3>
+        <div class="skill-items">
+          <span class="skill-pill">Meta Ads</span>
+          <span class="skill-pill">Google Ads</span>
+          <span class="skill-pill">Lead Gen Funnels</span>
+          <span class="skill-pill">A/B Testing</span>
+          <span class="skill-pill">Audience Segmentation</span>
+          <span class="skill-pill">SEO & On-Page</span>
+          <span class="skill-pill">GA4</span>
+          <span class="skill-pill">Search Console</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Web Development</h3>
+        <div class="skill-items">
+          <span class="skill-pill">WordPress</span>
+          <span class="skill-pill">WooCommerce</span>
+          <span class="skill-pill">HTML5 / CSS3</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">PHP</span>
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">Elementor</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Cybersecurity</h3>
+        <div class="skill-items">
+          <span class="skill-pill">Kali Linux</span>
+          <span class="skill-pill">Nmap</span>
+          <span class="skill-pill">Metasploit</span>
+          <span class="skill-pill">OSINT</span>
+          <span class="skill-pill">SQLi / XSS</span>
+          <span class="skill-pill">Bash Scripting</span>
+          <span class="skill-pill">TryHackMe</span>
+          <span class="skill-pill">HackTheBox</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3>Automation & AI</h3>
+        <div class="skill-items">
+          <span class="skill-pill">n8n</span>
+          <span class="skill-pill">ChatGPT</span>
+          <span class="skill-pill">Midjourney</span>
+          <span class="skill-pill">Canva AI</span>
+          <span class="skill-pill">Copy.ai</span>
+          <span class="skill-pill">Python Scripts</span>
+          <span class="skill-pill">CRM Automation</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>E-commerce</h3>
+        <div class="skill-items">
+          <span class="skill-pill">WooCommerce</span>
+          <span class="skill-pill">Product UX</span>
+          <span class="skill-pill">Core Web Vitals</span>
+          <span class="skill-pill">Mobile Optimization</span>
+          <span class="skill-pill">Conversion Rate</span>
+          <span class="skill-pill">Organic SEO</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-3">
+        <div class="skill-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Analytics & Tools</h3>
+        <div class="skill-items">
+          <span class="skill-pill">Google Analytics 4</span>
+          <span class="skill-pill">Meta Business Suite</span>
+          <span class="skill-pill">Search Console</span>
+          <span class="skill-pill">VS Code</span>
+          <span class="skill-pill">Git</span>
+          <span class="skill-pill">Canva</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ EXPERIENCE ══════════════════ -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Work Experience</div>
+    <h2 class="section-title reveal">Where I've Delivered</h2>
+    <p class="section-sub reveal">Real work. Real results. Real accountability.</p>
+    <div class="exp-grid">
+
+      <div class="exp-card reveal">
+        <div class="exp-period">2025 — Present</div>
+        <div class="exp-company">Unique Solar</div>
+        <div class="exp-role">Digital Marketing Executive</div>
+        <ul class="exp-points">
+          <li>Built & launched the company WordPress website with full on-page SEO from day one</li>
+          <li>Manage Google Ads & Meta Ads campaigns with rigorous audience segmentation</li>
+          <li>Consistently generate 600+ qualified solar leads per month</li>
+          <li>A/B test high-converting landing pages using HTML, CSS & WordPress builders</li>
+          <li>Track KPIs via GA4 and produce weekly performance reports for management</li>
+          <li>Automate lead nurturing & CRM handoff with n8n + Python, cutting overhead by 50%</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal reveal-delay-2">
+        <div class="exp-period">2022 — Present</div>
+        <div class="exp-company">TheTrendoraa.shop</div>
+        <div class="exp-role">Founder & Full-Stack Developer</div>
+        <ul class="exp-points">
+          <li>Designed & built a complete WooCommerce store using WordPress, PHP & custom CSS</li>
+          <li>Wrote custom PHP and JavaScript to extend WooCommerce functionality and UX</li>
+          <li>Managed Google Ads & Meta Ads campaigns driving consistent traffic and revenue</li>
+          <li>Performed SQL queries to manage product data, orders & customer records</li>
+          <li>Optimized Core Web Vitals, mobile responsiveness & SEO for organic growth</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CASE STUDIES ══════════════════ -->
+<section id="cases">
+  <div class="container">
+    <div class="section-label reveal">Case Studies</div>
+    <h2 class="section-title reveal">Results That Speak</h2>
+    <p class="section-sub reveal">Campaigns and projects with measurable, verified outcomes.</p>
+    <div class="case-grid">
+
+      <div class="case-card reveal">
+        <div class="case-num">01</div>
+        <div class="case-label">Lead Generation · Solar Energy</div>
+        <h3>Unique Solar — Ad Campaign</h3>
+        <p>End-to-end Meta & Google Ads strategy for a solar energy brand. From audience research and creative testing to landing page architecture and CRM automation — built and maintained a full lead generation engine.</p>
+        <div class="case-tags">
+          <span class="tag">Meta Ads</span>
+          <span class="tag">Google Ads</span>
+          <span class="tag">WordPress</span>
+          <span class="tag">n8n</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val">600+</span><span class="metric-key">Leads/Month</span></div>
+          <div class="metric"><span class="metric-val">−30%</span><span class="metric-key">Cost Per Lead</span></div>
+          <div class="metric"><span class="metric-val">−50%</span><span class="metric-key">Manual Work</span></div>
+        </div>
+      </div>
+
+      <div class="case-card reveal reveal-delay-2">
+        <div class="case-num">02</div>
+        <div class="case-label">E-Commerce · Fashion Brand</div>
+        <h3>TheTrendoraa.shop — Full Build</h3>
+        <p>Founded and built an online clothing brand from zero — custom WooCommerce store, full ad stack, and organic SEO. Handled everything: design, development, product management, campaigns, and database.</p>
+        <div class="case-tags">
+          <span class="tag">WooCommerce</span>
+          <span class="tag">PHP/JS</span>
+          <span class="tag">Meta Ads</span>
+          <span class="tag">SEO</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val">↑</span><span class="metric-key">Traffic Growth</span></div>
+          <div class="metric"><span class="metric-val">Live</span><span class="metric-key">Since 2022</span></div>
+          <div class="metric"><span class="metric-val">End-to-End</span><span class="metric-key">Built Solo</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ ACHIEVEMENTS ══════════════════ -->
+<section id="achievements">
+  <div class="container">
+    <div class="section-label reveal">Achievements</div>
+    <h2 class="section-title reveal">By the Numbers</h2>
+    <div class="ach-grid">
+      <div class="ach-card reveal"><div class="ach-icon">🎯</div><div class="ach-val">600+</div><div class="ach-desc">Qualified leads delivered per month via Meta & Google Ads for a solar energy client</div></div>
+      <div class="ach-card reveal reveal-delay-1"><div class="ach-icon">💰</div><div class="ach-val">−30%</div><div class="ach-desc">Cost-per-lead reduction through audience targeting refinements and creative A/B testing</div></div>
+      <div class="ach-card reveal reveal-delay-2"><div class="ach-icon">🤖</div><div class="ach-val">−50%</div><div class="ach-desc">Manual lead-management overhead eliminated through n8n + Python automation workflows</div></div>
+      <div class="ach-card reveal reveal-delay-1"><div class="ach-icon">🌐</div><div class="ach-val">3+</div><div class="ach-desc">Production WordPress websites built with custom PHP, JavaScript, and SEO from scratch</div></div>
+      <div class="ach-card reveal reveal-delay-2"><div class="ach-icon">🛒</div><div class="ach-val">1</div><div class="ach-desc">Live e-commerce brand (TheTrendoraa) independently launched end-to-end from concept</div></div>
+      <div class="ach-card reveal reveal-delay-3"><div class="ach-icon">🔐</div><div class="ach-val">1yr+</div><div class="ach-desc">Ethical hacking practice on Kali Linux; targeting CEH / CompTIA Security+ in 2025</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TOOLS ══════════════════ -->
+<section id="tools">
+  <div class="container" style="text-align:center">
+    <div class="section-label reveal" style="justify-content:center">Tech Stack</div>
+    <h2 class="section-title reveal">Tools I Use Daily</h2>
+    <div class="tools-row reveal">
+      <span class="tool-badge">⚡ Meta Ads</span>
+      <span class="tool-badge">🔍 Google Ads</span>
+      <span class="tool-badge">🌐 WordPress</span>
+      <span class="tool-badge">🎨 Elementor</span>
+      <span class="tool-badge">📊 GA4</span>
+      <span class="tool-badge">🔎 Search Console</span>
+      <span class="tool-badge">🤖 n8n</span>
+      <span class="tool-badge">🧠 ChatGPT</span>
+      <span class="tool-badge">🖼 Canva AI</span>
+      <span class="tool-badge">🐍 Python</span>
+      <span class="tool-badge">💻 VS Code</span>
+      <span class="tool-badge">🔱 Git</span>
+      <span class="tool-badge">🐧 Kali Linux</span>
+      <span class="tool-badge">🗺 Nmap</span>
+      <span class="tool-badge">⚔ Metasploit</span>
+      <span class="tool-badge">🧩 Midjourney</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label reveal" style="justify-content:center">Let's Talk</div>
+    <h2 class="section-title reveal" style="text-align:center">Ready to Work Together?</h2>
+    <p class="section-sub reveal" style="text-align:center;margin:0 auto 3rem">Whether you need more leads, a better website, or a sharper digital presence — I'm available for full-time roles and freelance projects.</p>
+    <div class="contact-card reveal">
+      <p style="color:var(--muted);font-size:.9rem;font-family:'Space Mono',monospace">REACH OUT DIRECTLY</p>
+      <div class="contact-email">amolpawade@email.com</div>
+      <a href="mailto:amolpawade@email.com" class="btn-primary" style="display:inline-flex;margin-top:.5rem">Send a Message →</a>
+      <div class="contact-row">
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +91 90287 89403
+        </div>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          thetrendoraa.shop
+        </div>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Maharashtra, India
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <div class="footer-left">© 2025 <span>Amol Pawade</span> — All rights reserved</div>
+  <div class="footer-right">Built with ❤ · Maharashtra, India</div>
+</footer>
+
+<script>
+  // ─── SCROLL REVEAL ───
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}
+    });
+  },{threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  // ─── NAV ACTIVE STATE ───
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+    navLinks.forEach(a=>{
+      a.style.color=a.getAttribute('href')==='#'+cur?'var(--cyan)':'';
+    });
+  });
+
+  // ─── STAT COUNTER ───
+  function animateCount(el,target,suffix=''){
+    let start=0,dur=1500,step=dur/60;
+    const t=setInterval(()=>{
+      start+=target/60;
+      el.textContent=Math.min(Math.round(start),target)+suffix;
+      if(start>=target)clearInterval(t);
+    },step);
+  }
+  const statsObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.stat-num').forEach(n=>{
+          const txt=n.textContent;
+          if(txt.includes('600'))animateCount(n,600,'+');
+          else if(txt.includes('30'))animateCount(n,30,'%+');
+          else if(txt.includes('50'))animateCount(n,50,'%');
+          else if(txt==='3+'){n.textContent='3+';}
+        });
+        statsObs.disconnect();
+      }
+    });
+  },{threshold:.5});
+  const heroStats=document.querySelector('.hero-stats');
+  if(heroStats)statsObs.observe(heroStats);
+</script>
+</body>
+</html>
